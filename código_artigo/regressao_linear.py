@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import LinearRegression
-from sklearn.metrics import accuracy_score, confusion_matrix
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 from sklearn.model_selection import train_test_split
 
 # 1. Carrega o dataset de animes
@@ -48,6 +48,9 @@ y_pred = (y_pred_continuo >= 0.5).astype(int)
 print(f"\nAcurácia: {accuracy_score(y_test, y_pred):.2%}")
 print("\nMatriz de confusão:")
 print(confusion_matrix(y_test, y_pred))
+
+print("\nRelatório de Classificação (Precision, Recall, F1-Score):")
+print(classification_report(y_test, y_pred, target_names=["Mal Avaliado (< 7)", "Bem Avaliado (>= 7)"]))
 
 # 8. Visualização fronteira de decisão
 xx, yy = np.meshgrid(
