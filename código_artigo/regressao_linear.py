@@ -5,28 +5,28 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import accuracy_score, confusion_matrix
 from sklearn.model_selection import train_test_split
 
-# 1. Carrega o dataset 
+# 1. Carrega o dataset de animes
 anime = pd.read_csv("dados/anime_dataset.csv")
 
-# 2. Limpeza específica para o seu arquivo
+# 2. Tratamento de dados
 anime["score"] = pd.to_numeric(anime["score"], errors="coerce")
 anime["episodes"] = pd.to_numeric(anime["episodes"], errors="coerce")
 anime["members"] = pd.to_numeric(anime["members"], errors="coerce")
 
-# Remove as linhas que possuem valores nulos nas colunas que vamos usar
+# Remove as linhas que possuem valores nulos nas colunas
 anime = anime.dropna(subset=["score", "episodes", "members"])
 
 # Garante que episódios seja inteiro
 anime["episodes"] = anime["episodes"].astype(int)
 
-# 3. Problema BINÁRIO:
+# 3. Problema Binário
 anime["target"] = (anime["score"] >= 7).astype(int)
 
 # Features escolhidas
 X = anime[["episodes", "members"]].values
 y = anime["target"].values
 
-# 4. Split treino/teste PADRONIZADO (70% treino, 30% teste)
+# 4. Split treino/teste (70% treino, 30% teste)
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.3, random_state=42, stratify=y
 )
@@ -49,7 +49,7 @@ print(f"\nAcurácia: {accuracy_score(y_test, y_pred):.2%}")
 print("\nMatriz de confusão:")
 print(confusion_matrix(y_test, y_pred))
 
-# 8. Visualizar fronteira de decisão
+# 8. Visualização fronteira de decisão
 xx, yy = np.meshgrid(
     np.linspace(X[:, 0].min(), np.percentile(X[:, 0], 95), 300),
     np.linspace(X[:, 1].min(), np.percentile(X[:, 1], 95), 300),
